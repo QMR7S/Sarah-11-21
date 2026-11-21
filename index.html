@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إلى سارتي ♡ — عالم صغير</title><meta name="theme-color" content="#171627">
+<style>*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 50% 15%,#4c3551,#171627 75%);color:#fff1e9;font:16px/2 sans-serif;text-align:center}.center{padding:36px}.mark{font:italic 80px Georgia,serif;color:#e6b9a6}small{opacity:.7}.progress{height:5px;max-width:260px;background:#ffffff2b;border-radius:8px;margin:25px auto}.progress>div{width:0%;height:100%;background:#dfa9bc;border-radius:8px;transition:width .25s}</style></head>
+<body><div class="center"><div class="mark">S.</div><h1>سارة... عالمج الصغير ينتظرج ♡</h1><p>نرتّب ورودج ونجومج...</p><div class="progress"><div id="bar"></div></div><small id="status">نحمّل الهدية</small></div>
+<script>
+(async()=>{
+  const n=14, chunks=[], status=document.querySelector('#status'), bar=document.querySelector('#bar');
+  try {
+    for(let i=1;i<=n;i++){
+      const name='./parts/part-'+String(i).padStart(2,'0')+'.txt';
+      const response=await fetch(name,{cache:'force-cache'});
+      if(!response.ok)throw new Error('Could not fetch '+name);
+      const base64=(await response.text()).replace(/\s/g,'');
+      const bin=atob(base64);
+      const bytes=new Uint8Array(bin.length);
+      for(let j=0;j<bin.length;j++)bytes[j]=bin.charCodeAt(j);
+      chunks.push(bytes);
+      bar.style.width=(i/n*100).toFixed(1)+'%';
+      status.textContent='النجوم '+i+' / '+n;
+    }
+    const size=chunks.reduce((n,x)=>n+x.length,0);
+    const full=new Uint8Array(size);let offset=0;
+    for(const chunk of chunks){full.set(chunk,offset);offset+=chunk.length;}
+    const page=new TextDecoder('utf-8').decode(full);
+    document.open();document.write(page);document.close();
+  } catch(error) {
+    console.error('Sara loading error',error);
+    status.textContent='تعذر تحميل الهدية. تأكد من اتصال الإنترنت ثم أعيدي فتح الرابط.';
+  }
+})();
+</script></body></html>
