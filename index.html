@@ -23,7 +23,7 @@
     const size=chunks.reduce((n,x)=>n+x.length,0);
     const full=new Uint8Array(size);let offset=0;
     for(const chunk of chunks){full.set(chunk,offset);offset+=chunk.length;}
-    const page=new TextDecoder('utf-8').decode(full)\n      .replace('</head>', '<link rel="stylesheet" href="./assets/v3.css?v=3.0.0"></head>')\n      .replace('</body>', '<script src="./assets/v3.js?v=3.0.0"></script></body>');
+    const page=new TextDecoder('utf-8').decode(full)\n      .replace('</head>', '<link rel="stylesheet" href="./assets/v3.css?v=3.0.0"></head>')\n      .replace('</body>', '<script src="./assets/v3.js?v=3.0.0"></' + 'script></body>');
     document.open();document.write(page);document.close();
   } catch(error) {
     console.error('Sara loading error',error);
